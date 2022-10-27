@@ -17,7 +17,7 @@ jobs:
         with:
           channel: master
       - run: sudo apt-get update -y && sudo apt-get install -y ninja-build libgtk-3-dev
-      - run: sh ./tool/pull_and_refresh.sh 
+      - run: sh ./tool/refresh.sh 
       - run: flutter config --enable-linux-desktop
       - name: Build
         working-directory: ./packages/devtools_app
@@ -45,7 +45,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: master
-      - run: sh ./tool/pull_and_refresh.sh 
+      - run: sh ./tool/refresh.sh 
       - name: Build
         working-directory: ./packages/devtools_app
         run: "flutter build web --release"
@@ -73,7 +73,7 @@ jobs:
         with:
           channel: master
       - name: Pull and refresh
-        run: sh ./tool/pull_and_refresh.sh 
+        run: sh ./tool/refresh.sh 
         shell: bash
       - run: flutter config --enable-windows-desktop
       - name: Build
