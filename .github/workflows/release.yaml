@@ -72,9 +72,9 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: master
-      - run: sh ./tool/pull_and_refresh.sh 
-        with:
-          shell: bash
+      - name: Pull and refresh
+        run: sh ./tool/pull_and_refresh.sh 
+        shell: bash
       - run: flutter config --enable-windows-desktop
       - name: Build
         working-directory: ./packages/devtools_app
