@@ -65,7 +65,7 @@ jobs:
           name: web-release
       - uses: actions/download-artifact@master
         with:
-          name: windows
+          name: windows-release
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
