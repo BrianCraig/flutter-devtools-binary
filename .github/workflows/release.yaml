@@ -46,7 +46,7 @@ jobs:
         with:
           type: zip
           filename: ${{ matrix.config.name }}.zip
-          folder: ./packages/devtools_app/build${{ matrix.config.output }}
+          path: ./packages/devtools_app/build${{ matrix.config.output }}
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
