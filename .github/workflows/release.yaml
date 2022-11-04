@@ -1,4 +1,4 @@
-name: Release Test
+name: Release
 
 on:
   push:
@@ -59,13 +59,13 @@ jobs:
     steps:
       - uses: actions/download-artifact@master
         with:
-          name: linux-release-zip
+          name: linux-release
       - uses: actions/download-artifact@master
         with:
-          name: web-release-zip
+          name: web-release
       - uses: actions/download-artifact@master
         with:
-          name: windows-release
+          name: windows
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
