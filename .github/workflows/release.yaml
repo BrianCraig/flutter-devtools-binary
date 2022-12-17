@@ -18,7 +18,7 @@ jobs:
         - runs_on: ubuntu-latest
           name: web-release
           pre_run: ""
-          build: flutter build web --release
+          build: flutter create --platforms=web . && flutter build web --release
           output: /web
         - runs_on: windows-latest
           name: windows-release
@@ -45,8 +45,8 @@ jobs:
         uses: thedoctor0/zip-release@0.6.2
         with:
           type: zip
-          filename: ${{ matrix.config.name }}.zip
-          path: ./packages/devtools_app/build${{ matrix.config.output }}
+          filename: ${{ github.workspace }}/${{ matrix.config.name }}.zip
+          directory: ./packages/devtools_app/build${{ matrix.config.output }}
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
