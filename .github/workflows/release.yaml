@@ -13,24 +13,24 @@ jobs:
         - runs_on: ubuntu-latest
           name: linux-release
           pre_run: sudo apt-get update -y && sudo apt-get install -y ninja-build libgtk-3-dev
-          build: flutter config --enable-linux-desktop && flutter create --platforms=linux . && flutter build linux --release
+          build: flutter config --enable-linux-desktop && flutter create --platforms=linux . && flutter build linux --release --no-tree-shake-icons
           output: /linux/x64/release/bundle
         - runs_on: ubuntu-latest
           name: web-release
           pre_run: ""
-          build: flutter create --platforms=web . && flutter build web --release
+          build: flutter create --platforms=web . && flutter build web --release --no-tree-shake-icons
           output: /web
         - runs_on: windows-latest
           name: windows-release
           pre_run: ""
-          build: flutter config --enable-windows-desktop && flutter create --platforms=windows . && flutter build windows
+          build: flutter config --enable-windows-desktop && flutter create --platforms=windows . && flutter build windows --no-tree-shake-icons
           output: /windows/runner/Release
     runs-on: ${{ matrix.config.runs_on }}
     steps:
       - uses: actions/checkout@v3
         with:
           repository: "flutter/devtools"
-          ref: v2.19.0
+          ref: v2.20.0
       - uses: subosito/flutter-action@v2
         with:
           channel: master
