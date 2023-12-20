@@ -1,0 +1,45 @@
+name: Get latest release version
+on:
+  schedule:
+    - cron:  '0 10 * * *'
+  workflow_dispatch:
+jobs:
+  get-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get Versions
+        id: versions
+        run: |
+          upstream=$(curl -sL https://api.github.com/repos/flutter/devtools/tags | jq -r ".[0].name")
+          last=$(cat latest.txt)
+          echo "upstream=$upstream" >> $GITHUB_OUTPUT
+          echo "last=$last" >> $GITHUB_OUTPUT
+
+      - name: Check Version
+        id: checkVersion
+        if: steps.versions.outputs.upstream != steps.versions.outputs.last
+        run: |
+          extracted_version=${{ steps.versions.outputs.upstream }}
+          echo "Versions differ. Updating latest.txt."
+          echo "$extracted_version" > latest.txt
+          git config --global user.email "briancraigok@gmail.com"
+          git config --global user.name "Brian Craig"
+          git add latest.txt
+          git commit -m "Release $extracted_version"
+          git tag "release.$extracted_version"
+          git push origin master --tags
+
+      - name: Trigger Other Workflow
+        uses: octokit/request-action@v2.x
+        id: dispatch
+        if: steps.versions.outputs.upstream != steps.versions.outputs.last
+        with:
+          route: POST /repos/{owner}/{repo}/dispatches
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.event.repository.name }}
+          event_type: release
+          client_payload: '{"ref": "release.${{ steps.versions.outputs.upstream }}"}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
